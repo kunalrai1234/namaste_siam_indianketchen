@@ -1,0 +1,8 @@
+[build]
+  command = ""
+  publish = "."
+
+[[redirects]]
+  from = "/"
+  to = "/namaste_siam_frontend.html"
+  status = 200
