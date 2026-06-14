@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Namaste Siam — Premium Restaurant Menu</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --orange: #FF4D00;
+    --orange-light: #FF7A3D;
+    --cream: #FFF8F0;
+    --dark: #1A0F00;
+    --brown: #3D1F00;
+    --yellow: #FFD23F;
+    --green: #2ECC71;
+    --card-bg: #FFFFFF;
+    --text-muted: #7A5C3E;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'DM Sans',sans-serif; background:var(--cream); color:var(--dark); overflow-x:hidden; }
+
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px; padding:16px 5%;
+    background:rgba(255,248,240,0.92); backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,77,0,0.12);
+  }
+  .logo { font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:800; color:var(--orange); letter-spacing:-1px; white-space:nowrap; }
+  .logo span { color:var(--dark); }
+  .nav-links { display:flex; gap:22px; list-style:none; }
+  .nav-links a { text-decoration:none; color:var(--brown); font-weight:600; font-size:0.9rem; transition:color .2s; }
+  .nav-links a:hover { color:var(--orange); }
+  .nav-welcome { font-size:0.9rem; color:var(--brown); font-weight:600; text-align:right; animation:welcomeFloat 2.5s ease-in-out infinite; max-width:44%; }
+  .nav-welcome span { color:var(--orange); font-weight:700; }
+  @keyframes welcomeFloat { 0%,100% { transform:translateY(0); opacity:0.9; } 50% { transform:translateY(-3px); opacity:1; } }
+
+  .hero {
+    min-height:100vh; display:flex; align-items:center; justify-content:space-between;
+    gap:40px; padding:110px 5% 60px;
+    background:
+      radial-gradient(ellipse 70% 80% at 80% 50%, #FFE5D3 0%, transparent 60%),
+      radial-gradient(ellipse 40% 40% at 20% 80%, #FFD23F22 0%, transparent 50%),
+      var(--cream);
+  }
+  .hero-content { max-width:640px; width:100%; }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:8px; background:#fff;
+    border:1px solid rgba(255,77,0,0.2); border-radius:50px;
+    padding:6px 16px; font-size:0.82rem; font-weight:600; color:var(--orange);
+    margin-bottom:24px; animation:fadeUp .6s ease both;
+  }
+  .hero-badge .dot { width:8px; height:8px; background:var(--green); border-radius:50%; animation:pulse 1.5s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .hero h1 {
+    font-family:'Syne',sans-serif; font-size:clamp(2rem,5vw,4.5rem);
+    font-weight:800; line-height:1.06; letter-spacing:-2px;
+    color:var(--dark); animation:fadeUp .6s .1s ease both;
+  }
+  .hero h1 em { font-style:normal; color:var(--orange); }
+  .hero p { margin:20px 0 28px; font-size:clamp(0.95rem,1.6vw,1.1rem); color:var(--text-muted); line-height:1.7; font-weight:300; animation:fadeUp .6s .2s ease both; }
+
+  .search-bar { display:flex; background:#fff; border-radius:16px; box-shadow:0 8px 40px rgba(61,31,0,0.12); overflow:hidden; animation:fadeUp .6s .3s ease both; }
+  .search-bar input { flex:1; min-width:0; border:none; outline:none; padding:16px 18px; font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--dark); background:transparent; }
+  .search-bar input::placeholder { color:#C4A882; }
+  .search-bar button { background:var(--orange); color:#fff; border:none; padding:0 22px; font-family:'Syne',sans-serif; font-size:0.98rem; font-weight:700; }
+
+  .hero-stats { display:flex; flex-wrap:wrap; gap:14px; margin-top:22px; animation:fadeUp .6s .4s ease both; }
+  .hero-stat {
+    background:#fff; border:1px solid rgba(255,77,0,0.14); border-radius:999px;
+    padding:8px 14px; font-size:0.82rem; color:var(--brown); font-weight:600;
+  }
+
+  .hero-visual { width:min(100%,460px); flex:0 0 auto; animation:floatIn .8s ease both; }
+  @keyframes floatIn { from{opacity:0;transform:translateY(20px) translateX(20px)} to{opacity:1;transform:translateY(0) translateX(0)} }
+
+  .feature-card { background:#fff; border-radius:24px; overflow:hidden; box-shadow:0 20px 60px rgba(61,31,0,0.16); animation:bobble 3s ease-in-out infinite; }
+  @keyframes bobble { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .feature-card img { width:100%; height:220px; object-fit:cover; display:block; }
+  .feature-card-body { padding:16px; }
+  .feature-kicker { font-size:0.75rem; font-weight:700; color:var(--orange); text-transform:uppercase; letter-spacing:.7px; }
+  .feature-title { font-family:'Syne',sans-serif; font-size:1.2rem; margin:6px 0; }
+  .feature-sub { color:var(--text-muted); font-size:0.86rem; }
+  .feature-price { margin-top:10px; color:var(--orange); font-family:'Syne',sans-serif; font-size:1.2rem; font-weight:800; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+  .section { padding:70px 5%; }
+  .section-header { display:flex; justify-content:space-between; align-items:flex-end; gap:16px; margin-bottom:24px; }
+  .section-title { font-family:'Syne',sans-serif; font-size:clamp(1.5rem,3.4vw,2rem); font-weight:800; letter-spacing:-1px; }
+  .section-title span { color:var(--orange); }
+
+  .categories { display:flex; gap:12px; overflow-x:auto; overflow-y:hidden; padding:8px 0; scrollbar-width:thin; }
+  .categories::-webkit-scrollbar { height:6px; }
+  .categories::-webkit-scrollbar-track { background:rgba(255,77,0,0.05); border-radius:10px; }
+  .categories::-webkit-scrollbar-thumb { background:rgba(255,77,0,0.3); border-radius:10px; }
+
+  .cat-pill {
+    display:flex; align-items:center; gap:8px; background:#fff; border:2px solid transparent;
+    border-radius:50px; padding:10px 16px; cursor:pointer; white-space:nowrap; transition:all .2s;
+    box-shadow:0 2px 12px rgba(61,31,0,0.06); font-weight:600; color:var(--dark); font-size:0.88rem;
+  }
+  .cat-pill.active, .cat-pill:hover { border-color:var(--orange); background:#FFF0E8; color:var(--orange); }
+
+  .menu-grid { display:grid; grid-template-columns:repeat(4, minmax(0, 1fr)); gap:18px; }
+  .dish-card {
+    background:#fff; border-radius:18px; overflow:hidden; box-shadow:0 4px 20px rgba(61,31,0,0.07);
+    cursor:pointer; transition:transform .22s, box-shadow .22s; position:relative;
+  }
+  .dish-card:hover { transform:translateY(-5px); box-shadow:0 12px 36px rgba(61,31,0,0.14); }
+  .dish-img { width:100%; height:170px; object-fit:cover; display:block; }
+  .dish-body { padding:14px; }
+  .dish-top { display:flex; justify-content:space-between; gap:8px; align-items:flex-start; }
+  .dish-name { font-family:'Syne',sans-serif; font-weight:700; font-size:1rem; }
+  .dish-price { color:var(--orange); font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:800; white-space:nowrap; }
+  .dish-desc { margin-top:6px; color:var(--text-muted); font-size:0.8rem; line-height:1.5; min-height:36px; }
+
+  .badges { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+  .badge {
+    font-size:0.68rem; font-weight:700; padding:4px 8px; border-radius:999px;
+    border:1px solid rgba(255,77,0,0.2); background:#FFF4EE; color:var(--orange);
+  }
+  .badge.green { background:#ECFFF4; color:#199A4D; border-color:#B8ECCD; }
+
+  .spice { margin-top:10px; font-size:0.75rem; color:var(--brown); font-weight:600; }
+  .ingredients { margin-top:8px; display:flex; flex-wrap:wrap; gap:6px; }
+  .ingredient {
+    font-size:0.66rem; color:var(--text-muted); border:1px solid rgba(122,92,62,0.22);
+    border-radius:999px; padding:3px 7px; background:#fff;
+  }
+
+  .cards-3 { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:18px; }
+  .info-card { background:#fff; border-radius:16px; padding:18px; box-shadow:0 4px 20px rgba(61,31,0,0.07); }
+  .info-card h3 { font-family:'Syne',sans-serif; font-size:1.05rem; margin-bottom:6px; }
+  .info-card p { color:var(--text-muted); font-size:0.86rem; line-height:1.65; }
+
+  .about-box {
+    background:#fff; border-radius:20px; padding:24px;
+    box-shadow:0 8px 30px rgba(61,31,0,0.09);
+    display:grid; grid-template-columns:1.2fr 1fr; gap:18px;
+  }
+  .about-box p { color:var(--text-muted); line-height:1.75; font-size:0.92rem; }
+  .about-points { display:grid; gap:10px; }
+  .about-pill {
+    background:#FFF4EE; border:1px solid rgba(255,77,0,0.18); border-radius:12px;
+    padding:10px 12px; color:var(--brown); font-size:0.84rem; font-weight:600;
+  }
+
+  .gallery-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; }
+  .gallery-grid img {
+    width:100%; height:100%; min-height:140px; object-fit:cover; border-radius:14px;
+    box-shadow:0 4px 16px rgba(61,31,0,0.1);
+  }
+  .gallery-grid .tall { grid-row:span 2; }
+
+  footer { background:var(--dark); color:rgba(255,255,255,0.75); padding:50px 5% 28px; margin-top:30px; }
+  .footer-grid { display:grid; grid-template-columns:2fr 1fr 1fr; gap:30px; margin-bottom:26px; }
+  .footer-logo { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; color:var(--orange); margin-bottom:10px; }
+  footer h4 { font-family:'Syne',sans-serif; color:#fff; margin-bottom:10px; }
+  footer ul { list-style:none; }
+  footer ul li { margin-bottom:8px; font-size:0.88rem; }
+  footer ul a { color:rgba(255,255,255,0.68); text-decoration:none; cursor:pointer; }
+  footer ul a:hover { color:var(--orange); }
+  .footer-bottom { border-top:1px solid rgba(255,255,255,0.12); padding-top:18px; text-align:center; font-size:0.8rem; }
+
+  .modal {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:1000;
+    align-items:center; justify-content:center; backdrop-filter:blur(4px); padding:12px;
+  }
+  .modal.open { display:flex; animation:fadeIn .22s ease; }
+  @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+  .modal-content {
+    background:#fff; border-radius:18px; width:min(920px, 100%); max-height:90vh; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.35); display:grid; grid-template-columns:1fr 1fr;
+    transform:translateY(10px); animation:slideUp .25s ease forwards;
+  }
+  @keyframes slideUp { to { transform:translateY(0);} }
+
+  .modal-img { width:100%; height:100%; min-height:340px; object-fit:cover; }
+  .modal-details { padding:22px; overflow-y:auto; }
+  .modal-close {
+    position:absolute; top:20px; right:20px; background:#fff; border:1px solid rgba(0,0,0,0.12);
+    border-radius:50%; width:34px; height:34px; cursor:pointer; font-size:1rem;
+  }
+  .modal-title { font-family:'Syne',sans-serif; font-size:1.7rem; margin-bottom:8px; }
+  .modal-desc { color:var(--text-muted); line-height:1.7; font-size:0.9rem; }
+  .modal-price { color:var(--orange); font-family:'Syne',sans-serif; font-size:1.5rem; margin:14px 0; }
+  .meta-row { display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 12px; }
+
+  @media (max-width: 1024px) {
+    nav { padding:14px 4%; }
+    .hero { padding:100px 4% 50px; gap:24px; }
+    .section { padding:56px 4%; }
+    .menu-grid { grid-template-columns:repeat(3, minmax(0, 1fr)); }
+    .cards-3 { grid-template-columns:1fr 1fr; }
+    .footer-grid { grid-template-columns:1.5fr 1fr 1fr; }
+    .gallery-grid { grid-template-columns:1.5fr 1fr 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    nav { flex-wrap:wrap; gap:8px; padding:12px 4%; }
+    .logo { font-size:1.4rem; }
+    .nav-links { display:none; }
+    .nav-welcome { width:100%; max-width:100%; text-align:left; font-size:0.82rem; animation:none; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .hero { min-height:auto; padding:104px 4% 30px; flex-direction:column; align-items:flex-start; gap:20px; }
+    .hero-visual { width:100%; }
+    .search-bar { flex-direction:column; border-radius:12px; }
+    .search-bar button { width:100%; padding:12px 16px; }
+
+    .section { padding:44px 4%; }
+    .menu-grid { grid-template-columns:repeat(2, minmax(0, 1fr)); }
+    .cards-3 { grid-template-columns:1fr; }
+    .about-box { grid-template-columns:1fr; }
+    .gallery-grid { grid-template-columns:1fr 1fr; }
+    .gallery-grid .tall { grid-row:auto; }
+
+    .footer-grid { grid-template-columns:1fr; gap:18px; }
+    .modal-content { grid-template-columns:1fr; max-height:92vh; }
+    .modal-img { min-height:220px; max-height:280px; }
+  }
+
+  @media (max-width: 480px) {
+    .logo { font-size:1.2rem; }
+    .hero h1 { letter-spacing:-1px; }
+    .menu-grid { grid-template-columns:1fr; }
+    .gallery-grid { grid-template-columns:1fr; }
+    .dish-img { height:190px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">Namaste<span>Siam</span></div>
+  <ul class="nav-links">
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#special">Specials</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#info">Info</a></li>
+  </ul>
+  <div class="nav-welcome">Welcome to <span>Namaste Siam</span> — Crafted Fresh. Served With Passion.</div>
+</nav>
+
+<section class="hero" id="top">
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span> Premium Dining Experience</div>
+    <h1>Experience <em>Authentic Flavours</em></h1>
+    <p>Crafted Fresh. Served With Passion. Explore our signature menu curated by our chefs for a refined dining experience.</p>
+    <div class="search-bar">
+      <input type="text" placeholder="Search dishes, ingredients, category..." id="searchInput"/>
+      <button type="button">Live Menu Search</button>
+    </div>
+    <div class="hero-stats">
+      <span class="hero-stat">⭐ 4.8 Customer Rating</span>
+      <span class="hero-stat">🍽️ 100+ Signature Dishes</span>
+      <span class="hero-stat">👨‍🍳 Fresh Ingredients</span>
+      <span class="hero-stat">🌿 Premium Quality</span>
+      <span class="hero-stat">🏆 Chef Recommended</span>
+    </div>
+  </div>
+  <div class="hero-visual" id="todaySpecialContainer"></div>
+</section>
+
+<section class="section" id="special">
+  <div class="section-header"><div class="section-title">Chef <span>Recommendations</span></div></div>
+  <div class="cards-3" id="chefRecs"></div>
+</section>
+
+<section class="section" style="padding-top:20px;" id="menu">
+  <div class="section-header"><div class="section-title">Browse <span>Menu Categories</span></div></div>
+  <div class="categories" id="categories"></div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-header"><div class="section-title">Popular <span>Dishes</span></div></div>
+  <div class="menu-grid" id="menuGrid"></div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-header"><div class="section-title">Customer <span>Favorites</span></div></div>
+  <div class="menu-grid" id="favoritesGrid"></div>
+</section>
+
+<section class="section" id="about">
+  <div class="section-header"><div class="section-title">About <span>Namaste Siam</span></div></div>
+  <div class="about-box" id="aboutBox"></div>
+</section>
+
+<section class="section" id="info" style="padding-top:0;">
+  <div class="section-header"><div class="section-title">Restaurant <span>Information</span></div></div>
+  <div class="cards-3" id="restaurantInfoGrid"></div>
+</section>
+
+<section class="section" style="padding-top:0;">
+  <div class="section-header"><div class="section-title">Gallery <span>& Ambience</span></div></div>
+  <div class="gallery-grid" id="galleryGrid"></div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">Namaste Siam</div>
+      <p>Premium restaurant menu experience with authentic flavors, elegant ambience, and chef-crafted cuisine.</p>
+    </div>
+    <div>
+      <h4>Restaurant</h4>
+      <ul id="footerRestaurantInfo"></ul>
+    </div>
+    <div>
+      <h4>Links</h4>
+      <ul>
+        <li><a onclick="openInfoModal('about')">About</a></li>
+        <li><a onclick="openInfoModal('contact')">Contact</a></li>
+        <li><a onclick="openInfoModal('privacy')">Privacy Policy</a></li>
+        <li><a onclick="openInfoModal('terms')">Terms</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Namaste Siam. All rights reserved.</div>
+</footer>
+
+<div id="dishModal" class="modal" aria-hidden="true">
+  <button class="modal-close" onclick="closeDishModal()" aria-label="Close modal">✕</button>
+  <div class="modal-content" id="dishModalContent"></div>
+</div>
+
+<div id="infoModal" class="modal" aria-hidden="true">
+  <button class="modal-close" onclick="closeInfoModal()" aria-label="Close modal">✕</button>
+  <div class="modal-content" style="grid-template-columns:1fr; max-width:640px;">
+    <div class="modal-details" id="infoModalBody"></div>
+  </div>
+</div>
+
+<script>
+/* Centralized Data Layer (ready for Supabase mapping) */
+const dataLayer = {
+  restaurantInfo: {
+    name: "Namaste Siam",
+    address: "456 Flavor Street, Bangkok 10110, Thailand",
+    phone: "+66-2-123-4567",
+    openingHours: "Monday – Sunday: 11:00 AM – 11:00 PM",
+    instagram: "@namastesiam",
+    website: "www.namastesiam.com",
+    diningStyle: "Premium Casual • Family • Fine Taste"
+  },
+  about: {
+    story: [
+      "At Namaste Siam, every plate tells a story of heritage, craftsmanship, and passion. Our kitchen celebrates authentic recipes with a contemporary touch, using handpicked produce, premium spices, and balanced flavors that feel both soulful and refined.",
+      "From timeless classics to chef-curated specialties, our menu is designed for guests who appreciate quality, consistency, and unforgettable taste."
+    ],
+    highlights: [
+      "🥬 Fresh ingredients sourced daily",
+      "📜 Authentic recipes with modern finesse",
+      "👨‍🍳 Passionate chefs, crafted presentations",
+      "✨ Premium quality in every serving"
+    ]
+  },
+  categories: [
+    { id: "all", label: "All" },
+    { id: "starters", label: "Starters" },
+    { id: "soups", label: "Soups" },
+    { id: "salads", label: "Salads" },
+    { id: "thai", label: "Thai Specials" },
+    { id: "indian", label: "Indian" },
+    { id: "chinese", label: "Chinese" },
+    { id: "main", label: "Main Course" },
+    { id: "rice", label: "Rice" },
+    { id: "noodles", label: "Noodles" },
+    { id: "pizza", label: "Pizza" },
+    { id: "burger", label: "Burger" },
+    { id: "desserts", label: "Desserts" },
+    { id: "beverages", label: "Beverages" }
+  ],
+  foods: [
+    {id:1,name:'Tom Yum Soup',description:'Aromatic Thai soup with lemongrass, galangal, and mushrooms.',priceTHB:299,category:'soups',type:'veg',spiceLevel:'🌶🌶 Medium',ingredients:['Lemongrass','Galangal','Mushroom','Lime Leaves'],chefSpecial:true,bestseller:true,customerFavorite:true,todaySpecial:true,image:'https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&w=1000&q=80'},
+    {id:2,name:'Paneer Tikka',description:'Char-grilled cottage cheese with smoky spices and mint.',priceTHB:349,category:'starters',type:'veg',spiceLevel:'🌶🌶 Medium',ingredients:['Paneer','Yogurt','Capsicum','Onion'],chefSpecial:true,bestseller:false,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1565557623262-b51c2513a641?auto=format&fit=crop&w=1000&q=80'},
+    {id:3,name:'Chicken Satay',description:'Skewered chicken with rich peanut glaze.',priceTHB:389,category:'starters',type:'nonveg',spiceLevel:'🌶 Mild',ingredients:['Chicken','Peanut','Garlic','Soy'],chefSpecial:false,bestseller:true,customerFavorite:true,todaySpecial:false,image:'https://images.unsplash.com/photo-1529042410759-befb1204b468?auto=format&fit=crop&w=1000&q=80'},
+    {id:4,name:'Green Thai Curry',description:'Coconut curry with fresh basil and seasonal vegetables.',priceTHB:429,category:'thai',type:'veg',spiceLevel:'🌶🌶🌶 Hot',ingredients:['Coconut Milk','Thai Basil','Broccoli','Zucchini'],chefSpecial:true,bestseller:true,customerFavorite:true,todaySpecial:false,image:'https://images.unsplash.com/photo-1455619452474-d2be8b1e70cd?auto=format&fit=crop&w=1000&q=80'},
+    {id:5,name:'Butter Chicken',description:'Classic creamy tomato gravy with tender chicken.',priceTHB:459,category:'indian',type:'nonveg',spiceLevel:'🌶🌶 Medium',ingredients:['Chicken','Tomato','Butter','Cream'],chefSpecial:true,bestseller:true,customerFavorite:true,todaySpecial:false,image:'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?auto=format&fit=crop&w=1000&q=80'},
+    {id:6,name:'Veg Hakka Noodles',description:'Wok-tossed noodles with crisp vegetables.',priceTHB:289,category:'noodles',type:'veg',spiceLevel:'🌶 Mild',ingredients:['Noodles','Capsicum','Carrot','Cabbage'],chefSpecial:false,bestseller:true,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1612929633738-8fe44f7ec841?auto=format&fit=crop&w=1000&q=80'},
+    {id:7,name:'Margherita Pizza',description:'Stone-baked pizza with mozzarella, basil, and olive oil.',priceTHB:399,category:'pizza',type:'veg',spiceLevel:'🌶 Mild',ingredients:['Mozzarella','Basil','Tomato','Olive Oil'],chefSpecial:false,bestseller:true,customerFavorite:true,todaySpecial:false,image:'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1000&q=80'},
+    {id:8,name:'Truffle Mushroom Burger',description:'Juicy patty with truffle mayo and caramelized onions.',priceTHB:379,category:'burger',type:'nonveg',spiceLevel:'🌶 Mild',ingredients:['Patty','Brioche','Mushroom','Truffle Mayo'],chefSpecial:true,bestseller:false,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=80'},
+    {id:9,name:'Thai Mango Salad',description:'Refreshing salad with raw mango and herbs.',priceTHB:249,category:'salads',type:'veg',spiceLevel:'🌶🌶 Medium',ingredients:['Raw Mango','Peanut','Mint','Lime'],chefSpecial:false,bestseller:false,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1000&q=80'},
+    {id:10,name:'Jeera Rice',description:'Fragrant basmati tossed with cumin and ghee.',priceTHB:199,category:'rice',type:'veg',spiceLevel:'🌶 Mild',ingredients:['Basmati','Cumin','Ghee'],chefSpecial:false,bestseller:false,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1516684732162-798a0062be99?auto=format&fit=crop&w=1000&q=80'},
+    {id:11,name:'Chocolate Mousse',description:'Velvety dark chocolate mousse with cocoa dust.',priceTHB:229,category:'desserts',type:'veg',spiceLevel:'🌶 Mild',ingredients:['Dark Chocolate','Cream','Cocoa'],chefSpecial:false,bestseller:true,customerFavorite:true,todaySpecial:false,image:'https://images.unsplash.com/photo-1579954115563-e72bf1381629?auto=format&fit=crop&w=1000&q=80'},
+    {id:12,name:'Saffron Lassi',description:'Chilled yogurt drink infused with saffron.',priceTHB:179,category:'beverages',type:'veg',spiceLevel:'🌶 Mild',ingredients:['Yogurt','Saffron','Cardamom'],chefSpecial:false,bestseller:false,customerFavorite:false,todaySpecial:false,image:'https://images.unsplash.com/photo-1628207776546-365bb710ee93?auto=format&fit=crop&w=1000&q=80'}
+  ],
+  gallery: [
+    { image:'https://images.unsplash.com/photo-1528605105345-5344ea20e269?auto=format&fit=crop&w=1200&q=80', alt:'Restaurant interior', tall:true },
+    { image:'https://images.unsplash.com/photo-1541544181074-e9b7f47eb4f6?auto=format&fit=crop&w=1200&q=80', alt:'Food plating' },
+    { image:'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1200&q=80', alt:'Dining table' },
+    { image:'https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=1200&q=80', alt:'Chef at work' },
+    { image:'https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=1200&q=80', alt:'Kitchen' }
+  ]
+};
+
+/* Derived collections (future: can come directly from Supabase views/queries) */
+const derivedData = {
+  get todaysSpecial() { return dataLayer.foods.find(f => f.todaySpecial) || dataLayer.foods[0]; },
+  get chefRecommendations() { return dataLayer.foods.filter(f => f.chefSpecial).slice(0, 3); },
+  get customerFavorites() { return dataLayer.foods.filter(f => f.customerFavorite); },
+  get popularDishes() { return dataLayer.foods.filter(f => f.bestseller); }
+};
+
+const state = { activeCategory: "all", query: "" };
+
+const infoContent = {
+  about: `<h2 class="modal-title">About ${dataLayer.restaurantInfo.name}</h2><p class="modal-desc">A premium culinary destination celebrating authentic flavours, fresh ingredients, and chef-crafted experiences.</p>`,
+  contact: `<h2 class="modal-title">Contact</h2><p class="modal-desc">📍 ${dataLayer.restaurantInfo.address}<br/>📞 ${dataLayer.restaurantInfo.phone}<br/>🕒 ${dataLayer.restaurantInfo.openingHours}</p>`,
+  privacy: `<h2 class="modal-title">Privacy Policy</h2><p class="modal-desc">We value your privacy and use information only to improve your browsing experience.</p>`,
+  terms: `<h2 class="modal-title">Terms</h2><p class="modal-desc">All menu items and prices are subject to availability and seasonal updates.</p>`
+};
+
+function dishCard(d){
+  return `
+  <article class="dish-card" onclick="openDishModal(${d.id})" tabindex="0" role="button" aria-label="${d.name}">
+    <img class="dish-img" src="${d.image}" alt="${d.name}" loading="lazy"/>
+    <div class="dish-body">
+      <div class="dish-top">
+        <div class="dish-name">${d.name}</div>
+        <div class="dish-price">฿${d.priceTHB}</div>
+      </div>
+      <div class="dish-desc">${d.description}</div>
+      <div class="badges">
+        <span class="badge ${d.type === 'veg' ? 'green':''}">${d.type === 'veg' ? 'Veg' : 'Non-Veg'}</span>
+        ${d.chefSpecial ? '<span class="badge">Chef Special</span>' : ''}
+        ${d.bestseller ? '<span class="badge">Bestseller</span>' : ''}
+      </div>
+      <div class="spice">${d.spiceLevel}</div>
+      <div class="ingredients">${d.ingredients.slice(0,5).map(i=>`<span class="ingredient">${i}</span>`).join('')}</div>
+    </div>
+  </article>`;
+}
+
+function renderCategories(){
+  const el = document.getElementById("categories");
+  el.innerHTML = dataLayer.categories.map(c => `<div class="cat-pill ${c.id===state.activeCategory?'active':''}" data-cat="${c.id}">${c.label}</div>`).join("");
+  el.querySelectorAll(".cat-pill").forEach(p => {
+    p.addEventListener("click", () => {
+      state.activeCategory = p.dataset.cat;
+      renderCategories();
+      renderMenuSections();
+    });
+  });
+}
+
+function filterFoods(list){
+  const q = state.query.trim().toLowerCase();
+  return list.filter(f => {
+    const byCategory = state.activeCategory === "all" || f.category === state.activeCategory;
+    if (!q) return byCategory;
+    const searchable = `${f.name} ${f.description} ${f.category} ${f.ingredients.join(" ")}`.toLowerCase();
+    return byCategory && searchable.includes(q);
+  });
+}
+
+function renderTodaysSpecial(){
+  const d = derivedData.todaysSpecial;
+  document.getElementById("todaySpecialContainer").innerHTML = `
+    <div class="feature-card">
+      <img src="${d.image}" alt="${d.name}">
+      <div class="feature-card-body">
+        <div class="feature-kicker">Today's Special</div>
+        <div class="feature-title">${d.name}</div>
+        <div class="feature-sub">${d.description}</div>
+        <div class="feature-price">฿${d.priceTHB}</div>
+      </div>
+    </div>`;
+}
+
+function renderChefRecommendations(){
+  document.getElementById("chefRecs").innerHTML = derivedData.chefRecommendations.map(d => `
+    <div class="info-card" onclick="openDishModal(${d.id})" style="cursor:pointer">
+      <img src="${d.image}" alt="${d.name}" loading="lazy" style="width:100%;height:170px;object-fit:cover;border-radius:12px;margin-bottom:12px;">
+      <h3>${d.name}</h3>
+      <p>${d.description}</p>
+      <p style="margin-top:8px;color:var(--orange);font-family:'Syne',sans-serif;font-weight:800">฿${d.priceTHB}</p>
+    </div>`).join("");
+}
+
+function renderMenuSections(){
+  const filteredAll = filterFoods(dataLayer.foods);
+  const popularFiltered = filteredAll.filter(d => derivedData.popularDishes.some(p => p.id === d.id));
+  const favoritesFiltered = filteredAll.filter(d => derivedData.customerFavorites.some(f => f.id === d.id));
+
+  document.getElementById("menuGrid").innerHTML = (popularFiltered.length ? popularFiltered : filteredAll).map(dishCard).join("") || '<p style="color:var(--text-muted)">No dishes found.</p>';
+  document.getElementById("favoritesGrid").innerHTML = favoritesFiltered.map(dishCard).join("") || '<p style="color:var(--text-muted)">No favorites for this filter.</p>';
+}
+
+function renderAbout(){
+  const a = dataLayer.about;
+  document.getElementById("aboutBox").innerHTML = `
+    <div>
+      ${a.story.map((p, i) => `<p ${i ? 'style="margin-top:12px;"' : ''}>${p}</p>`).join("")}
+    </div>
+    <div class="about-points">
+      ${a.highlights.map(h => `<div class="about-pill">${h}</div>`).join("")}
+    </div>`;
+}
+
+function renderRestaurantInfo(){
+  const r = dataLayer.restaurantInfo;
+  document.getElementById("restaurantInfoGrid").innerHTML = `
+    <div class="info-card"><h3>📍 Address</h3><p>${r.address}</p></div>
+    <div class="info-card"><h3>📞 Phone</h3><p>${r.phone}</p></div>
+    <div class="info-card"><h3>🕒 Opening Hours</h3><p>${r.openingHours}</p></div>
+    <div class="info-card"><h3>📷 Instagram</h3><p>${r.instagram}</p></div>
+    <div class="info-card"><h3>🌐 Website</h3><p>${r.website}</p></div>
+    <div class="info-card"><h3>🍽️ Dining Style</h3><p>${r.diningStyle}</p></div>
+  `;
+  document.getElementById("footerRestaurantInfo").innerHTML = `
+    <li>📍 ${r.address}</li>
+    <li>📞 ${r.phone}</li>
+    <li>🕒 ${r.openingHours}</li>
+  `;
+}
+
+function renderGallery(){
+  document.getElementById("galleryGrid").innerHTML = dataLayer.gallery.map(g =>
+    `<img ${g.tall ? 'class="tall"' : ''} src="${g.image}" alt="${g.alt}" loading="lazy">`
+  ).join("");
+}
+
+function openDishModal(id){
+  const d = dataLayer.foods.find(x => x.id === id);
+  if(!d) return;
+  document.getElementById("dishModalContent").innerHTML = `
+    <img class="modal-img" src="${d.image}" alt="${d.name}" />
+    <div class="modal-details">
+      <h2 class="modal-title">${d.name}</h2>
+      <p class="modal-desc">${d.description}</p>
+      <div class="modal-price">฿${d.priceTHB}</div>
+      <div class="meta-row">
+        <span class="badge ${d.type === 'veg' ? 'green':''}">${d.type === 'veg' ? 'Veg' : 'Non-Veg'}</span>
+        ${d.chefSpecial ? '<span class="badge">Chef Special</span>' : ''}
+        ${d.bestseller ? '<span class="badge">Bestseller</span>' : ''}
+        <span class="badge">${d.spiceLevel}</span>
+      </div>
+      <h4 style="font-family:'Syne',sans-serif;margin-top:10px;">Ingredients</h4>
+      <div class="ingredients" style="margin-top:10px;">
+        ${d.ingredients.map(i=>`<span class="ingredient">${i}</span>`).join('')}
+      </div>
+    </div>`;
+  document.getElementById("dishModal").classList.add("open");
+}
+function closeDishModal(){ document.getElementById("dishModal").classList.remove("open"); }
+
+function openInfoModal(type){
+  document.getElementById("infoModalBody").innerHTML = infoContent[type] || "<p>Not found</p>";
+  document.getElementById("infoModal").classList.add("open");
+}
+function closeInfoModal(){ document.getElementById("infoModal").classList.remove("open"); }
+
+function setupSearch(){
+  document.getElementById("searchInput").addEventListener("input", (e) => {
+    state.query = e.target.value;
+    renderMenuSections();
+  });
+}
+
+function setupModalClose(){
+  document.getElementById("dishModal").addEventListener("click", (e) => { if(e.target.id==="dishModal") closeDishModal(); });
+  document.getElementById("infoModal").addEventListener("click", (e) => { if(e.target.id==="infoModal") closeInfoModal(); });
+}
+
+function init(){
+  /* Supabase Integration Point:
+     Replace this local dataLayer with async fetch from Supabase tables/views.
+     Example:
+     - restaurant_info table -> dataLayer.restaurantInfo
+     - about table -> dataLayer.about
+     - categories table -> dataLayer.categories
+     - foods table -> dataLayer.foods
+     - gallery table -> dataLayer.gallery
+  */
+  renderTodaysSpecial();
+  renderChefRecommendations();
+  renderCategories();
+  renderMenuSections();
+  renderAbout();
+  renderRestaurantInfo();
+  renderGallery();
+  setupSearch();
+  setupModalClose();
+}
+
+init();
+</script>
+</body>
+</html>
